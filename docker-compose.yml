@@ -28,3 +28,25 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
     depends_on:
       - kafka
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: order-api
+    ports:
+      - "8000:8000"
+    environment:
+      - KAFKA_SERVER=kafka:29092
+    depends_on:
+      - kafka
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.consumer
+    container_name: order-consumer
+    environment:
+      - KAFKA_SERVER=kafka:29092
+    depends_on:
+      - kafka

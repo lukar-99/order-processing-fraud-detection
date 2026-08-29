@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: order-processing-system
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/lukar-99/order-processing-fraud-detection.git'
+    targetRevision: HEAD
+    path: ci
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true     # Deletes K8s resources if removed from Git
+      selfHeal: true  # Reverts manual cluster overrides back to Git state
+    syncOptions:
+    - CreateNamespace=true

@@ -1,5 +1,8 @@
 from logging import getLogger
 from aiokafka import AIOKafkaProducer
+from aiokafka.errors import KafkaConnectionError, KafkaError
+from tenacity import retry, stop_after_attempt, retry_if_exception_type, wait_exponential
+
 from app.config import settings
 from app.schemas.order_schema import OrderEvent
 
@@ -7,6 +10,12 @@ logger = getLogger(__name__)
 producer: AIOKafkaProducer | None = None
 
 
+@retry(
+    retry=retry_if_exception_type((KafkaConnectionError, ConnectionRefusedError, OSError, KafkaError)),
+    stop=stop_after_attempt(10),
+    wait=wait_exponential(multiplier=1, min=1, max=10),
+    reraise=True
+)
 async def start_kafka():
     logger.info("Starting Kafka server")
 

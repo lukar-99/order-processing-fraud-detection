@@ -128,7 +128,7 @@ spec:
   triggers:
   - type: kafka
     metadata:
-      bootstrapServers: kafka.order-processing.svc.cluster.local:9092
+      bootstrapServers: 10.100.161.75:9092
       consumerGroup: order-processor-group
       topic: order-events
       lagThreshold: "10"

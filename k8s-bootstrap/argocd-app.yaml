@@ -11,10 +11,10 @@ spec:
     path: ci
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: default
+    namespace: order-processing
   syncPolicy:
     automated:
-      prune: true     # Deletes K8s resources if removed from Git
-      selfHeal: true  # Reverts manual cluster overrides back to Git state
+      prune: true
+      selfHeal: true
     syncOptions:
     - CreateNamespace=true
